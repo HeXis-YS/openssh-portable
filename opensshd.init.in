@@ -9,10 +9,10 @@ CAT=@CAT@
 KILL=@KILL@
 
 prefix=@prefix@
-sysconfdir=@sysconfdir@/hpnssh
+sysconfdir=@sysconfdir@
 piddir=@piddir@
 
-SSHD=$prefix/sbin/hpnsshd
+SSHD=$prefix/sbin/sshd
 PIDFILE=$piddir/hpnsshd.pid
 PidFile=`grep "^PidFile" ${sysconfdir}/sshd_config | tr "=" " " | awk '{print $2}'`
 [ X$PidFile = X ]  ||  PIDFILE=$PidFile
