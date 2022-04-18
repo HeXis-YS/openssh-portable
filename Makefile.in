@@ -111,7 +111,7 @@ LIBSSH_OBJS=${LIBOPENSSH_OBJS} \
 	kexgexc.o kexgexs.o \
 	kexsntrup761x25519.o sntrup761.o kexgen.o \
 	sftp-realpath.o platform-pledge.o platform-tracing.o platform-misc.o \
-	sshbuf-io.o
+	sshbuf-io.o metrics.o binn.o
 
 SKOBJS=	ssh-sk-client.o
 
@@ -734,18 +734,18 @@ interop-tests t-exec file-tests: regress-prep regress-binaries $(TARGETS)
 		PATH="$(BUILDDIR):$${PATH}" \
 		TEST_ENV=MALLOC_OPTIONS="@TEST_MALLOC_OPTIONS@" \
 		TEST_MALLOC_OPTIONS="@TEST_MALLOC_OPTIONS@" \
-		TEST_SSH_SCP="$(BUILDDIR)/scp" \
-		TEST_SSH_SSH="$(BUILDDIR)/ssh" \
-		TEST_SSH_SSHD="$(BUILDDIR)/sshd" \
-		TEST_SSH_SSHAGENT="$(BUILDDIR)/ssh-agent" \
-		TEST_SSH_SSHADD="$(BUILDDIR)/ssh-add" \
-		TEST_SSH_SSHKEYGEN="$(BUILDDIR)/ssh-keygen" \
-		TEST_SSH_SSHPKCS11HELPER="$(BUILDDIR)/ssh-pkcs11-helper" \
-		TEST_SSH_SSHKEYSCAN="$(BUILDDIR)/ssh-keyscan" \
-		TEST_SSH_SFTP="$(BUILDDIR)/sftp" \
-		TEST_SSH_PKCS11_HELPER="$(BUILDDIR)/ssh-pkcs11-helper" \
-		TEST_SSH_SK_HELPER="$(BUILDDIR)/ssh-sk-helper" \
-		TEST_SSH_SFTPSERVER="$(BUILDDIR)/sftp-server" \
+		TEST_SSH_SCP="$${BUILDDIR}/scp" \
+		TEST_SSH_SSH="$${BUILDDIR}/ssh" \
+		TEST_SSH_SSHD="$${BUILDDIR}/sshd" \
+		TEST_SSH_SSHAGENT="$${BUILDDIR}/ssh-agent" \
+		TEST_SSH_SSHADD="$${BUILDDIR}/ssh-add" \
+		TEST_SSH_SSHKEYGEN="$${BUILDDIR}/ssh-keygen" \
+		TEST_SSH_SSHPKCS11HELPER="$${BUILDDIR}/ssh-pkcs11-helper" \
+		TEST_SSH_SSHKEYSCAN="$${BUILDDIR}/ssh-keyscan" \
+		TEST_SSH_SFTP="$${BUILDDIR}/sftp" \
+		TEST_SSH_PKCS11_HELPER="$${BUILDDIR}/ssh-pkcs11-helper" \
+		TEST_SSH_SK_HELPER="$${BUILDDIR}/ssh-sk-helper" \
+		TEST_SSH_SFTPSERVER="$${BUILDDIR}/sftp-server" \
 		TEST_SSH_MODULI_FILE="$(abs_top_srcdir)/moduli" \
 		TEST_SSH_PLINK="plink" \
 		TEST_SSH_PUTTYGEN="puttygen" \

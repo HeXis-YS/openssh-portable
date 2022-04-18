@@ -1440,6 +1440,8 @@ listen_on_addrs(struct listenaddr *la)
 	int ret, listen_sock;
 	struct addrinfo *ai;
 	char ntop[NI_MAXHOST], strport[NI_MAXSERV];
+	int socksize;
+	int socksizelen = sizeof(int);
 
 	for (ai = la->addrs; ai; ai = ai->ai_next) {
 		if (ai->ai_family != AF_INET && ai->ai_family != AF_INET6)
@@ -1484,6 +1486,11 @@ listen_on_addrs(struct listenaddr *la)
 			sock_set_v6only(listen_sock);
 
 		debug("Bind to port %s on %s.", strport, ntop);
+
+		getsockopt(listen_sock, SOL_SOCKET, SO_RCVBUF,
+				   &socksize, &socksizelen);
+		debug("Server TCP RWIN socket size: %d", socksize);
+		debug("HPN Buffer Size: %d", options.hpn_buffer_size);
 
 		/* Bind the socket to the desired port. */
 		if (bind(listen_sock, ai->ai_addr, ai->ai_addrlen) == -1) {
@@ -2208,6 +2215,19 @@ main(int ac, char **av)
 	/* Fill in default values for those options not explicitly set. */
 	fill_default_server_options(&options);
 
+	if (options.none_enabled == 1) {
+		char *old_ciphers = options.ciphers;
+		xasprintf(&options.ciphers, "%s,none", old_ciphers);
+		free(old_ciphers);
+
+		/* only enable the none MAC in context of the none cipher -cjr */
+		if (options.nonemac_enabled == 1) {
+		  char *old_macs = options.macs;
+		  xasprintf(&options.macs, "%s,none", old_macs);
+		  free(old_macs);
+		}
+	}
+
 	/* Check that options are sensible */
 	if (options.authorized_keys_command_user == NULL &&
 	    (options.authorized_keys_command != NULL &&
@@ -2671,6 +2691,9 @@ done_loading_hostkeys:
 #endif
 	free(laddr);
 
+	/* set the HPN options for the child */
+	channel_set_hpn(options.hpn_disabled, options.hpn_buffer_size);
+
 	/*
 	 * We don't want to listen forever unless the other side
 	 * successfully authenticates itself.  So we set up an alarm which is
@@ -2847,6 +2870,11 @@ do_ssh2_kex(struct ssh *ssh)
 	char *myproposal[PROPOSAL_MAX] = { KEX_SERVER };
 	struct kex *kex;
 	int r;
+
+	if (options.none_enabled == 1)
+		debug("WARNING: None cipher enabled");
+	if (options.nonemac_enabled == 1)
+		debug("WARNING: None MAC enabled");
 
 	myproposal[PROPOSAL_KEX_ALGS] = compat_kex_proposal(ssh,
 	    options.kex_algorithms);

@@ -48,6 +48,7 @@
 #include "sshbuf.h"
 #include "ssherr.h"
 #include "digest.h"
+#include "log.h"
 
 #include "openbsd-compat/openssl-compat.h"
 
@@ -93,7 +94,8 @@ static const struct sshcipher ciphers[] = {
 	{ "aes256-cbc",		16, 32, 0, 0, CFLAG_CBC, EVP_aes_256_cbc },
 	{ "aes128-ctr",		16, 16, 0, 0, 0, EVP_aes_128_ctr },
 	{ "aes192-ctr",		16, 24, 0, 0, 0, EVP_aes_192_ctr },
-	{ "aes256-ctr",		16, 32, 0, 0, 0, EVP_aes_256_ctr },
+	{ "aes256-ctr",		16, 32, 0, 0, 0, EVP_aes_256_ctr }, 
+
 # ifdef OPENSSL_HAVE_EVPGCM
 	{ "aes128-gcm@openssh.com",
 				16, 16, 12, 16, 0, EVP_aes_128_gcm },
@@ -107,9 +109,9 @@ static const struct sshcipher ciphers[] = {
 #endif
 	{ "chacha20-poly1305@openssh.com",
 				8, 64, 0, 16, CFLAG_CHACHAPOLY, NULL },
-	{ "none",		8, 0, 0, 0, CFLAG_NONE, NULL },
+	{ "none",               8, 0, 0, 0, CFLAG_NONE, NULL },
 
-	{ NULL,			0, 0, 0, 0, 0, NULL }
+	{ NULL,                 0, 0, 0, 0, 0, NULL }
 };
 
 /*--*/
@@ -226,7 +228,8 @@ ciphers_valid(const char *names)
 	for ((p = strsep(&cp, CIPHER_SEP)); p && *p != '\0';
 	    (p = strsep(&cp, CIPHER_SEP))) {
 		c = cipher_by_name(p);
-		if (c == NULL || (c->flags & CFLAG_INTERNAL) != 0) {
+		  if (c == NULL || ((c->flags & CFLAG_INTERNAL) != 0 &&
+				    (c->flags & CFLAG_NONE) != 0)) {
 			free(cipher_list);
 			return 0;
 		}

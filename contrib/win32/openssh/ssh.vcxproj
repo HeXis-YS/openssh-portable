@@ -329,6 +329,7 @@
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <ControlFlowGuard>Guard</ControlFlowGuard>
       <AdditionalOptions>/Gy /ZH:SHA_256 %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -496,6 +497,8 @@
     <ClInclude Include="$(OpenSSH-Src-Path)uuencode.h" />
     <ClInclude Include="$(OpenSSH-Src-Path)version.h" />
     <ClInclude Include="$(OpenSSH-Src-Path)xmalloc.h" />
+    <ClInclude Include="..\..\..\binn.h" />
+    <ClInclude Include="..\..\..\metrics.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(OpenSSH-Src-Path)clientloop.c" />
@@ -507,6 +510,8 @@
     <ClCompile Include="$(OpenSSH-Src-Path)contrib\win32\win32compat\win32_sshtty.c" />
     <ClCompile Include="$(OpenSSH-Src-Path)contrib\win32\win32compat\win32-utf8.c" />
     <ClCompile Include="$(OpenSSH-Src-Path)ssh-sk-client.c" />
+    <ClCompile Include="..\..\..\binn.c" />
+    <ClCompile Include="..\..\..\metrics.c" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="version.rc" />
