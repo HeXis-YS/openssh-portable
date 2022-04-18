@@ -1,7 +1,5 @@
 # HPNSSH: Based on Portable OpenSSH Version 
 
-Starting with version HPN17v0 there will be significant changes to the naming convention used for executables and installation locations. The last version that does not include these changes is HPN16v1 corresponding to the HPN-8_8_P1 tag on the master branch. 
-
 HPNSSH is a variant of OpenSSH. It a complete implementation of the SSH protocol (version 2) for secure remote login, command execution and file transfer. It includes a client ``hpnssh`` and server ``hpnsshd``, file transfer utilities ``hpnscp`` and ``hpnsftp`` as well as tools for key generation (``hpnssh-keygen``), run-time key storage (``hpnssh-agent``) and a number of supporting programs. It includes numerous performance and functionality enhancements focused on high performance networks and computing envrironments. Complete information can be found in the HPN-README file. 
 
 It is fully compatible with all compliant implementations of the SSH protocol and OpenSSH in particular.
