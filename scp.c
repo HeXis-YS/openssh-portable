@@ -832,12 +832,14 @@ main(int argc, char **argv)
 	 * So the current solution is to give the user the option of
 	 * entering the path to correct scp. If they don't then it defaults
 	 * to whatever scp is first in their path -cjr */
+	/* TODO: Rethink this in light renaming the binaries */
 	(void) snprintf(cmd, sizeof cmd, "%s%s%s%s%s%s",
 			remote_path ? remote_path : "scp",
 			verbose_mode ? " -v" : "",
-			iamrecursive ? " -r" : "", pflag ? " -p" : "",
+			iamrecursive ? " -r" : "",
+			pflag ? " -p" : "",
 			targetshouldbedirectory ? " -d" : "",
-			resume_flag ? " -R" : "");
+			resume_flag ? " -Z" : "");
 #ifdef DEBUG
 		fprintf(stderr, "%s: Sending cmd %s\n", hostname, cmd);
 #endif
