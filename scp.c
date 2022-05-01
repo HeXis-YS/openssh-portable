@@ -1531,7 +1531,7 @@ void calculate_hash(char *filename, char *output, off_t length)
 		return;
 	}
 
-	md = EVP_get_digestbyname("blake2b512");
+	md = EVP_get_digestbyname("sha512");
 	c = EVP_MD_CTX_new();
 	EVP_DigestInit_ex(c, md, NULL);
 
