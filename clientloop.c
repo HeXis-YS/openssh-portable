@@ -2516,7 +2516,7 @@ client_process_request_metrics (struct ssh *ssh, int type, u_int32_t seq, void *
 	}
 
 	/* open the file handle to write the remote data*/
-	remfptr = fopen(remfilename, "a");
+	remfptr = fopen(remfilename, "ab");
 	if (remfptr == NULL)
 		fatal("Error opening %s: %s", remfilename, strerror(errno));
 
@@ -2556,7 +2556,7 @@ localonly:
 	}
 #else
 	/* open file handle for local data */
-	localfptr = fopen(localfilename, "a");
+	localfptr = fopen(localfilename, "ab");
 	if(localfptr == NULL)
 		fatal("Error opening %s: %s", localfilename, strerror(errno));
 

@@ -2714,12 +2714,12 @@ bad:			run_err("%s: %s", np, strerror(errno));
 			if (close(ofd) == -1)
 				note_err("%s: close: %s", np, strerror(errno));
 			/* orig is the target file, resume is the temp file */
-			orig = fopen(np_tmp, "a"); /*open for appending*/
+			orig = fopen(np_tmp, "ab"); /*open for appending*/
 			if (orig == NULL) {
 				fprintf(stderr, "%s: Could not open %s for appending.", hostname, np_tmp);
 				goto stopcat;
 			}
-			resume = fopen(np, "r"); /*open for reading only*/
+			resume = fopen(np, "rb"); /*open for reading only*/
 			if (resume == NULL) {
 				fprintf(stderr, "%s: Could not open %s for reading.", hostname, np);
 				goto stopcat;
