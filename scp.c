@@ -459,7 +459,7 @@ main(int argc, char **argv)
 
 	fflag = Tflag = tflag = 0;
 	while ((ch = getopt(argc, argv,
-	    "12346ABCTdfpqrtvRF:J:P:S:c:i:l:o:s:")) != -1) {
+	    "12346ABCTdfpqrtvRZF:J:P:S:c:i:l:o:s:z:")) != -1) {
 		switch (ch) {
 		/* User-visible flags. */
 		case '1':
@@ -514,6 +514,7 @@ main(int argc, char **argv)
 		case 'S':
 			ssh_program = xstrdup(optarg);
 			break;
+		case 'z':
 		case 's':
 			remote_path = xstrdup(optarg);
 			break;
@@ -527,6 +528,7 @@ main(int argc, char **argv)
 			addargs(&remote_remote_args, "-q");
 			showprogress = 0;
 			break;
+		case 'Z':
 		case 'R':
 			resume_flag = 1;
 			break;
@@ -2182,9 +2184,9 @@ void
 usage(void)
 {
 	(void) fprintf(stderr,
-	    "usage: scp [-346ABCpqrTvR] [-c cipher] [-F ssh_config] [-i identity_file]\n"
+	    "usage: scp [-346ABCpqrTvRZ] [-c cipher] [-F ssh_config] [-i identity_file]\n"
 	    "            [-J destination] [-l limit] [-o ssh_option] [-P port]\n"
-	    "            [-S program] [-s filepath of remote scp] source ... target\n");
+	    "            [-S program] [-s / -z filepath of remote scp] source ... target\n");
 	exit(1);
 }
 
