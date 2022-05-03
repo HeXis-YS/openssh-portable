@@ -304,7 +304,7 @@ w32_fopen_utf8(const char *input_path, const char *mode)
 	errno_t r = 0;
 	int nonfs_dev = 0; /* opening a non file system device */
 
-	if (mode == NULL || mode[1] != '\0') {
+	if (mode == NULL) {
 		errno = ENOTSUP;
 		return NULL;
 	}

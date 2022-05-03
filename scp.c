@@ -1520,7 +1520,7 @@ void calculate_hash(char *filename, char *output, off_t length)
 	*output = '\0';
 
 	/* open file for calculating hash */
-	file_ptr = fopen(filename, "r");
+	file_ptr = fopen(filename, "rb");
 	if (file_ptr==NULL)
 	{
 		if (verbose_mode) {
