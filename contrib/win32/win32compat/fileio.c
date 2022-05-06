@@ -936,7 +936,7 @@ fileio_lseek(struct w32_io* pio, unsigned __int64 offset, int origin)
 	pio->write_overlapped.Offset = pio->read_overlapped.Offset = offset & 0xffffffff;
 	pio->write_overlapped.OffsetHigh = pio->read_overlapped.OffsetHigh = (offset & 0xffffffff00000000) >> 32;
 	 
-	return 0;
+	return offset;
 }
 
 /* fdopen() to be used  on pipe handles */

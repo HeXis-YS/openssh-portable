@@ -1849,7 +1849,7 @@ syserr:			run_err("%s: %s", name, strerror(errno));
 					fprintf(stderr, "%s: xfer_size: %ld, stb.st_size: %ld insize: %ld\n",
 						hostname, xfer_size, stb.st_size, insize);
 #endif
-					if (lseek(fd, insize, SEEK_CUR) != (off_t)insize) {
+					if (lseek(fd, insize, SEEK_SET) != (off_t)insize) {
 #ifdef DEBUG
 						fprintf(stderr, "%s: lseek did not return %ld\n", hostname, insize) ;
 #endif
