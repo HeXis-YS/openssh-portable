@@ -1734,17 +1734,17 @@ syserr:			run_err("%s: %s", name, strerror(errno));
 		}
 #define	FILEMODEMASK	(S_ISUID|S_ISGID|S_IRWXU|S_IRWXG|S_IRWXO)
 #ifdef WINDOWS
+		if (!buf)
+		{
+			/*Set the initial size of buf to "strlen(last) + 20" based on multiple tests that*/
+			/*inidicate that this is usually enough. If not enough, more space will be allocated below.*/
+			buf_len = ((strlen(last) + 20) < PATH_MAX) ? strlen(last) + 20 : PATH_MAX;
+			buf = xmalloc(buf_len);
+		}
 		/* Add a hash of the file along with the filemode if in resume */
 		if (resume_flag) 
 		{
-			if (!buf) 
-			{
-				/*Set the initial size of buf to "strlen(last) + 20" based on multiple tests that*/
-				/*inidicate that this is usually enough. If not enough, more space will be allocated below.*/
-				buf_len = ((strlen(last) + 20) < PATH_MAX) ? strlen(last) + 20 : PATH_MAX;
-				buf = xmalloc(buf_len);
-			}
-			while ((tmp_len = snprintf(buf, buf_len, "C%04o %lld %s\n",
+			while ((tmp_len = snprintf(buf, buf_len, "C%04o %lld %s %s\n",
 			      (u_int) (stb.st_mode & FILEMODEMASK),
 				  (long long)stb.st_size, hashsum, last)) >= buf_len) {
 				if (tmp_len >= PATH_MAX)
@@ -1755,13 +1755,6 @@ syserr:			run_err("%s: %s", name, strerror(errno));
 		}
 		else
 		{
-			if (!buf) 
-			{
-				/*Set the initial size of buf to "strlen(last) + 20" based on multiple tests that*/
-				/*inidicate that this is usually enough. If not enough, more space will be allocated below.*/
-				buf_len = ((strlen(last) + 20) < PATH_MAX) ? strlen(last) + 20 : PATH_MAX;
-				buf = xmalloc(buf_len);
-			}
 			while ((tmp_len = snprintf(buf, buf_len, "C%04o %lld %s\n",
 			      (u_int) (stb.st_mode & FILEMODEMASK),
 				  (long long)stb.st_size, last)) >= buf_len) {
