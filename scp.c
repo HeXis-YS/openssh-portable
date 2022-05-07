@@ -2707,18 +2707,18 @@ bad:			run_err("%s: %s", np, strerror(errno));
 			if (close(ofd) == -1)
 				note_err("%s: close: %s", np, strerror(errno));
 			/* orig is the target file, resume is the temp file */
-			orig = fopen(np_tmp, "ab"); /*open for appending*/
+			orig = open(np_tmp, O_APPEND | O_BINARY); /*open for appending*/
 			if (orig == NULL) {
 				fprintf(stderr, "%s: Could not open %s for appending.", hostname, np_tmp);
 				goto stopcat;
 			}
-			resume = fopen(np, "rb"); /*open for reading only*/
+			resume = open(np, O_RDONLY | O_BINARY); /*open for reading only*/
 			if (resume == NULL) {
 				fprintf(stderr, "%s: Could not open %s for reading.", hostname, np);
 				goto stopcat;
 			}
 			/* get the number of bytes in the temp file*/
-			if (fstat(fileno(resume), &res_stat) == -1) {
+			if (fstat(resume, &res_stat) == -1) {
 				fprintf(stderr, "%s: Could not stat %s", hostname, np);
 				goto stopcat;
 			}
@@ -2726,15 +2726,15 @@ bad:			run_err("%s: %s", np, strerror(errno));
 			 * is less than the size of the file read in a chunk and
 			 * write it to the target file */
 			do {
-				res_bytes = fread(res_buf, 1, 512, resume);
-				fwrite(res_buf, 1, res_bytes, orig);
+				res_bytes = read(resume, res_buf, 512);
+				write(orig, res_buf, res_bytes);
 				sum += res_bytes;
 			} while (sum < res_stat.st_size);
 
-stopcat:		if (orig)
-				fclose(orig);
+stopcat:	if (orig)
+				close(orig);
 			if (resume)
-				fclose(resume);
+				close(resume);
 			/* delete the resume file */
 			remove(np);
 #ifdef DEBUG
